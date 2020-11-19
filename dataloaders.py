@@ -3,7 +3,7 @@ import torchvision
 import torchvision.transforms as transforms
 import os
 
-def dataloaders(main_file_directory):
+def dataloaders(main_file_directory,batch_size = 1):
     def return_loaders(transform_list,batch_size,main_file_directory='output'):
         train_data = torchvision.datasets.ImageFolder(root=os.path.join(main_file_directory,'train'), transform=transform_list[0])
         val_data = torchvision.datasets.ImageFolder(root=os.path.join(main_file_directory,'val'), transform=transform_list[1])
@@ -44,7 +44,6 @@ def dataloaders(main_file_directory):
         print('std',std)
         return mean,std
 
-    batch_size = 1
     transform_list = [transforms.Resize((96,96)),transforms.ToTensor()]
     train_transforms, val_transforms, test_transforms = transform_list,transform_list,transform_list
     initial_transforms = transforms.Compose(transform_list)
