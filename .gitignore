@@ -1,2 +1,8 @@
 .DS_Store
 dataset/
+train_label_to_category.csv
+train_clean.csv
+.DS_Store
+chromedriver
+*.csv
+*.pyc
