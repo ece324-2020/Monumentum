@@ -6,3 +6,4 @@ train_clean.csv
 chromedriver
 *.csv
 *.pyc
+output
