@@ -90,7 +90,7 @@ def create_augmented_folders():
     test_path = os.path.join(dataset_path,test_dir)
 
     create_augment_folder(train_path, dataset_path, train_dir)
-    create_augment_folder(val_path, dataset_path, val_dir)
-    create_augment_folder(test_path, dataset_path, test_dir)
+    #create_augment_folder(val_path, dataset_path, val_dir)
+    #create_augment_folder(test_path, dataset_path, test_dir)
 
 create_augmented_folders()
