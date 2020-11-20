@@ -1,4 +1,4 @@
-from id_preprocessing import get_existing_landmarks
+#from id_preprocessing import get_existing_landmarks
 import pandas as pd
 import os
 import shutil
@@ -50,6 +50,31 @@ def main_extract(complete_data_dir,extracted_data_dir):
             source_path = complete_data_dir + os.sep + sub1 + os.sep + sub2 + os.sep + sub3 + os.sep + img_id + img_extension
             shutil.copy(source_path,subpath)
 
+def get_subset():
+    # Get subset of data
+    landmarkid_freq_pairs = [(38482, 704), (40088, 679), (25093, 663), (162833, 662), (173511, 656),
+        (189907, 621), (190822, 614), (76303, 604), (191292, 600), (109169, 597), (51856, 576), (192931, 572),
+        (41808, 570), (107164, 542), (189811, 540), (101399, 538), (64792, 531), (80177, 527), (27190, 520),
+        (152708, 514), (143710, 508), (31531, 505), (27, 504), (113838, 503), (85633, 502), (19605, 492),(28139, 486),
+        (132969, 485), (115821, 482), (147897, 479), (73300, 477), (107801, 474), (80272, 473), (29794, 463),
+        (171683, 460), (199450, 459), (137203, 456), (39865, 452), (31361, 449), (51272, 437), (165900, 429),
+        (15445, 428), (190956, 428), (98993, 427), (201840, 427), (136302, 426), (70644, 425), (103899, 423),
+        (28641, 418), (180901, 413)]
+    folders = ['train','test','val']
+    for folder in folders:
+        for landmark in landmarkid_freq_pairs:
+            orig_path = 'extracted_data_dir_split'+os.sep+folder+os.sep+str(landmark[0])
+            subset_path = 'extracted_data_dir_split_subset'+os.sep+folder+os.sep+str(landmark[0])
+            if not os.path.exists(subset_path):
+                os.mkdir(subset_path)
+            images = os.listdir(orig_path)
+            if folder == 'train':
+                counter = 100
+            else:
+                counter = 11
+            for i in range(counter):
+                shutil.copy(orig_path+os.sep+images[i],subset_path)
+
 
 if __name__ == '__main__':
-    main_extract('complete_data','extracted_data_dir')
+    get_subset()
