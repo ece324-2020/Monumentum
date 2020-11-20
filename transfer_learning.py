@@ -9,11 +9,10 @@ def return_model(model_tag='ResNet'):
     ssl._create_default_https_context = ssl._create_unverified_context
 
     res_mod = models.resnet34(pretrained=True)
-    vgg_mod = models.vgg16(pretrained=True)
     print(res_mod.fc)
     num_ftrs = res_mod.fc.in_features
     res_mod.fc = nn.Sequential(nn.Linear(num_ftrs, 128),
-                               nn.Linear(128,30))
+                               nn.Linear(128,50))
     print(res_mod.fc)
     for name, child in res_mod.named_children():
         if name in ['fc']:
