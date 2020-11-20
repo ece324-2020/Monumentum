@@ -22,7 +22,7 @@ def load_images_from_folder(folder):
 
 def get_random_augment(image):
     options = ['Noise', 'Flip Horizontal', 'Rotate']
-    choice = random.randint(0,len(options)-1)
+    choice = random.randint(0,len(options)-2)
     #Noise Operation
     noise = iaa.AdditiveGaussianNoise(scale=0.2*255)
     #rotate = iaa.Rotate((-45, 45))
@@ -41,8 +41,9 @@ def augment_images(image_list):
 def get_median_data(set_path):
     class_dirs = next(os.walk(set_path))[1]
     lengths = []
+    print('Running get_median_data')
     for path in class_dirs:
-        original_images = np.array(load_images_from_folder(os.path.join(set_path,path)))
+        original_images = np.array(load_images_from_folder(os.path.join(set_path,path)), dtype=object)
         lengths = lengths + [original_images.shape[0]]
     return statistics.median(lengths)
 
@@ -98,7 +99,7 @@ def create_augment_folder(set_path, dataset_path, set_dir):
 
 def create_augmented_folders():
     base = os.path.dirname(os.path.realpath(__file__))
-    dataset_path = os.path.join(base,'dataset')
+    dataset_path = os.path.join(base,'extracted_data_dir_split')
     train_dir='train'
     val_dir='val'
     test_dir='test'
