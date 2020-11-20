@@ -1,6 +1,6 @@
 '''
 Implementation of Baseline LeNet-5 on RGB Input and modified input size and modified output vector size (50 instead of 10)
-Assume input height and width of 96x96 instead of 32x32
+Assume input height and width of 56x56 
 '''
 import torch.nn as nn
 import torch.nn.functional as F
