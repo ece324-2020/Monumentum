@@ -3,6 +3,13 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import statistics
+from skimage.util import random_noise
+from skimage.transform import rotate
+import random
+from scipy import ndimage, misc
+import skimage as sk
+import imgaug.augmenters as iaa
+
 
 def load_images_from_folder(folder):
     images = []
@@ -13,10 +20,21 @@ def load_images_from_folder(folder):
                 images.append(img)
     return images
 
+def get_random_augment(image):
+    options = ['Noise', 'Flip Horizontal', 'Rotate']
+    choice = random.randint(0,len(options)-1)
+    #Noise Operation
+    noise = iaa.AdditiveGaussianNoise(scale=0.2*255)
+    #rotate = iaa.Rotate((-45, 45))
+    augment_options = [noise(images=image), np.fliplr(image), ndimage.rotate(image, 45, reshape=False)]
+    final_image=augment_options[choice]
+    print('Applying:',options[choice])
+    return final_image
+
 def augment_images(image_list):
     new_images=[]
     for image in image_list:
-        new_image = (np.flipud(image))
+        new_image = get_random_augment(image)
         new_images+=[new_image]
     return new_images
 
@@ -76,7 +94,7 @@ def create_augment_folder(set_path, dataset_path, set_dir):
             print(error)
 
         for i,image in enumerate(new_class_images):
-            plt.imsave(os.path.join(new_class_dir,str(i)+'.png'),image)
+            plt.imsave(os.path.join(new_class_dir,str(i)+'.jpg'),image)
 
 def create_augmented_folders():
     base = os.path.dirname(os.path.realpath(__file__))
@@ -90,7 +108,7 @@ def create_augmented_folders():
     test_path = os.path.join(dataset_path,test_dir)
 
     create_augment_folder(train_path, dataset_path, train_dir)
-    create_augment_folder(val_path, dataset_path, val_dir)
-    create_augment_folder(test_path, dataset_path, test_dir)
+    #create_augment_folder(val_path, dataset_path, val_dir)
+    #create_augment_folder(test_path, dataset_path, test_dir)
 
 create_augmented_folders()
