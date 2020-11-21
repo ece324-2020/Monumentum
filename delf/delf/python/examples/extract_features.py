@@ -114,6 +114,66 @@ def main(unused_argv):
                            descriptors_out, attention_out)
 
 
+def create_delf_files(config_path,list_images_path,output_dir):
+  # Read list of images.
+  sys.path.insert(1, 'delf_parameters')
+  #os.chdir('delf_parameters')
+
+  print('Reading list of images...')
+  image_paths = _ReadImageList(list_images_path)
+  print(image_paths)
+  #exit()
+  num_images = len(image_paths)
+  print(f'done! Found {num_images} images')
+
+  # Parse DelfConfig proto.
+  config = delf_config_pb2.DelfConfig()
+  with tf.io.gfile.GFile(config_path, 'r') as f:
+    text_format.Merge(f.read(), config)
+
+  # Create output directory if necessary.
+  if not tf.io.gfile.exists(output_dir):
+    tf.io.gfile.makedirs(output_dir)
+  #print(output_dir,'output_dir')
+  #print(config[])
+  extractor_fn = extractor.MakeExtractor(config)
+
+  start = time.time()
+  for i in range(num_images):
+    # Report progress once in a while.
+    if i == 0:
+      print('Starting to extract DELF features from images...')
+    elif i % _STATUS_CHECK_ITERATIONS == 0:
+      elapsed = (time.time() - start)
+      print(
+          f'Processing image {i} out of {num_images}, last '
+          f'{_STATUS_CHECK_ITERATIONS} images took {elapsed} seconds'
+      )
+      start = time.time()
+
+    # If descriptor already exists, skip its computation.
+    out_desc_filename = os.path.splitext(os.path.basename(
+        image_paths[i]))[0] + _DELF_EXT
+    out_desc_fullpath = os.path.join(output_dir, out_desc_filename)
+    if tf.io.gfile.exists(out_desc_fullpath):
+      print(f'Skipping {image_paths[i]}')
+      continue
+
+    im = np.array(utils.RgbLoader(image_paths[i]))
+
+    # Extract and save features.
+    extracted_features = extractor_fn(im)
+    locations_out = extracted_features['local_features']['locations']
+    descriptors_out = extracted_features['local_features']['descriptors']
+    feature_scales_out = extracted_features['local_features']['scales']
+    attention_out = extracted_features['local_features']['attention']
+
+    feature_io.WriteToFile(out_desc_fullpath, locations_out, feature_scales_out,
+                           descriptors_out, attention_out)
+
+#print("ASDASDIUASD")
+#create_delf_files('delf_config_example.pbtxt','list_images.txt','test_features')
+'''
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.register('type', 'bool', lambda v: v.lower() == 'true')
@@ -141,4 +201,4 @@ if __name__ == '__main__':
       will be written to a file with same name, and extension replaced by .delf.
       """)
   cmd_args, unparsed = parser.parse_known_args()
-  app.run(main=main, argv=[sys.argv[0]] + unparsed)
+  app.run(main=main, argv=[sys.argv[0]] + unparsed)'''

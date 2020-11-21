@@ -83,7 +83,7 @@ def main(unused_argv):
                               max_trials=1000)
 
   print(f'Found {sum(inliers)} inliers')
-
+  '''
   # Visualize correspondences, and save to file.
   _, ax = plt.subplots()
   img_1 = mpimg.imread(cmd_args.image_1_path)
@@ -99,8 +99,8 @@ def main(unused_argv):
       matches_color='b')
   ax.axis('off')
   ax.set_title('DELF correspondences')
-  plt.savefig(cmd_args.output_image)
-
+  plt.savefig(cmd_args.output_image)'''
+  return sum(inliers)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
@@ -141,4 +141,60 @@ if __name__ == '__main__':
       Path where an image showing the matches will be saved.
       """)
   cmd_args, unparsed = parser.parse_known_args()
+  print([sys.argv[0]] + unparsed)
   app.run(main=main, argv=[sys.argv[0]] + unparsed)
+
+
+def get_inliers(features_1_path,features_2_path,image_1_path,image_2_path,output_image):
+    # Read features.
+    locations_1, _, descriptors_1, _, _ = feature_io.ReadFromFile(features_1_path)
+    num_features_1 = locations_1.shape[0]
+    print(f"Loaded image 1's {num_features_1} features")
+    locations_2, _, descriptors_2, _, _ = feature_io.ReadFromFile(features_2_path)
+    num_features_2 = locations_2.shape[0]
+    print(f"Loaded image 2's {num_features_2} features")
+
+    # Find nearest-neighbor matches using a KD tree.
+    d1_tree = spatial.cKDTree(descriptors_1)
+    _, indices = d1_tree.query(
+        descriptors_2, distance_upper_bound=_DISTANCE_THRESHOLD)
+
+    # Select feature locations for putative matches.
+    locations_2_to_use = np.array([
+        locations_2[i,]
+        for i in range(num_features_2)
+        if indices[i] != num_features_1
+    ])
+    locations_1_to_use = np.array([
+        locations_1[indices[i],]
+        for i in range(num_features_2)
+        if indices[i] != num_features_1
+    ])
+
+    # Perform geometric verification using RANSAC.
+    _, inliers = measure.ransac((locations_1_to_use, locations_2_to_use),
+                                transform.AffineTransform,
+                                min_samples=3,
+                                residual_threshold=20,
+                                max_trials=1000)
+
+    print(f'Found {sum(inliers)} inliers')
+
+    '''# Visualize correspondences, and save to file.
+    _, ax = plt.subplots()
+    img_1 = mpimg.imread(image_1_path)
+    img_2 = mpimg.imread(image_2_path)
+    inlier_idxs = np.nonzero(inliers)[0]
+    feature.plot_matches(
+        ax,
+        img_1,
+        img_2,
+        locations_1_to_use,
+        locations_2_to_use,
+        np.column_stack((inlier_idxs, inlier_idxs)),
+        matches_color='b')
+    ax.axis('off')
+    ax.set_title('DELF correspondences')
+    plt.savefig(output_image)'''
+
+    return sum(inliers)
