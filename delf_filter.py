@@ -36,10 +36,15 @@ def compare_images():
         slash = '\\'
     else:
         slash = '/'
+    try:
+        os.mkdir(os.path.join('delf_parameters','delf_features'))
+        os.mkdir(os.path.join('delf_parameters','list_images'))
+    except:
+        pass
     base = os.path.dirname(os.path.realpath(__file__))
     delf_parameters_path = os.path.join(base,'delf_parameters')
     config_path = os.path.join(delf_parameters_path,'delf_config_example.pbtxt')
-    output_dir = os.path.join(delf_parameters_path,'test_features')
+    output_dir = os.path.join(delf_parameters_path,'delf_features')
     list_images_path = os.path.join(delf_parameters_path,'list_images')
 
     dataset_path = os.path.join(base,'dataset')

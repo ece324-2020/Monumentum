@@ -8,4 +8,4 @@ chromedriver
 *.pyc
 output
 *.jpg
-*.png
+dataset_chosen/
