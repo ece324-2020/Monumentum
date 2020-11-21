@@ -75,6 +75,34 @@ def get_subset():
             for i in range(counter):
                 shutil.copy(orig_path+os.sep+images[i],subset_path)
 
+def remerge_data_set():
+    landmarkid_freq_pairs = [(38482, 704), (40088, 679), (25093, 663), (162833, 662), (173511, 656),
+        (189907, 621), (190822, 614), (76303, 604), (191292, 600), (109169, 597), (51856, 576), (192931, 572),
+        (41808, 570), (107164, 542), (189811, 540), (101399, 538), (64792, 531), (80177, 527), (27190, 520),
+        (152708, 514), (143710, 508), (31531, 505), (27, 504), (113838, 503), (85633, 502), (19605, 492),(28139, 486),
+        (132969, 485), (115821, 482), (147897, 479), (73300, 477), (107801, 474), (80272, 473), (29794, 463),
+        (171683, 460), (199450, 459), (137203, 456), (39865, 452), (31361, 449), (51272, 437), (165900, 429),
+        (15445, 428), (190956, 428), (98993, 427), (201840, 427), (136302, 426), (70644, 425), (103899, 423),
+        (28641, 418), (180901, 413)]
+    folders = ['train','test','val']
+    merge_path = 'extracted_data_unsplit'
+    split_path = 'extracted_data_dir_split'
+    for folder in folders:
+        for landmark in landmarkid_freq_pairs:
+            split_path_temp = split_path+os.sep+folder+os.sep+str(landmark[0])
+            merge_path_temp = merge_path + os.sep + str(landmark[0])
+            if not os.path.exists(merge_path_temp):
+                os.mkdir(merge_path_temp)
+            images = os.listdir(split_path_temp)
+            for i in images:
+                shutil.copy(split_path_temp+os.sep+i,merge_path_temp)
+                #print('Copied {} to {}'.format(split_path_temp+os.sep+i,merge_path_temp))
+
+
+
+
+
 
 if __name__ == '__main__':
-    get_subset()
+    #get_subset()
+    remerge_data_set()

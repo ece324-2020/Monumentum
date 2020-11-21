@@ -30,7 +30,7 @@ def return_wikimedia_list():
                 final_string+=' '
         extracted_wikimedia_list+=[final_string]
 
-    final_list = [(landmark_id_list[index],extracted_wikimedia_list[index]) for index in range(len(extracted_wikimedia_list))]
+    final_list = zip(landmark_id_list,extracted_wikimedia_list)
     return final_list
 
 final_list = return_wikimedia_list()
