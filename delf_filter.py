@@ -39,6 +39,7 @@ def compare_images():
     try:
         os.mkdir(os.path.join('delf_parameters','delf_features'))
         os.mkdir(os.path.join('delf_parameters','list_images'))
+        os.mkdir('dataset_chosen')
     except:
         pass
     base = os.path.dirname(os.path.realpath(__file__))
