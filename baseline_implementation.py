@@ -33,7 +33,7 @@ if __name__ == '__main__':
     print('Preparing DataLoaders')
     train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
     print('DataLoaders Ready')
-    LeNet_Baseline = LeNet(input_size=96)
+    LeNet_Baseline = LeNet(96)
     LeNet_Baseline = LeNet_Baseline.to(device)
     #summary(LeNet_Baseline,(3,56,56))
     loss_function = nn.CrossEntropyLoss()
