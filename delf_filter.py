@@ -140,6 +140,7 @@ def compare_images():
                 if '.DS_Store' in file_path:
                     continue
                 else:
+                    counter=0
                     for delf_path in os.listdir(os.path.join(output_dir,path)):
                         if '.DS_Store' in delf_path:
                             continue
@@ -148,7 +149,7 @@ def compare_images():
                             features_2_path = os.path.join(os.path.join(output_dir,path),file_path[:-3]+'delf')
                             features_1_slash = os.path.join(features_1_path.split(os.sep)[-2],features_1_path.split(os.sep)[-1])[:-4]+'jpg'
                             features_2_slash = os.path.join(features_2_path.split(os.sep)[-2],features_2_path.split(os.sep)[-1])[:-4]+'jpg'
-                            #output_image = '{}.jpg'.format(counter)
+                            output_image = '{}.jpg'.format(counter)
                             #print(output_image)
                             #print('dataset_chosen'+os.sep+features_1_slash,data_directory+os.sep+features_2_slash)
                             #inliers = get_inliers(features_1_path, features_2_path, data_directory+os.sep+features_1_slash, 'dataset_chosen'+os.sep+features_2_slash, output_image)
