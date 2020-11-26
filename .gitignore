@@ -13,3 +13,5 @@ dataset_chosen/
 *.proto
 *.txt
 *.zip
+key
+key.pub
