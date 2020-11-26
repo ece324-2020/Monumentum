@@ -35,5 +35,3 @@ class LeNet(nn.Module):
         out = self.relu(self.fc2(out))
         raw_predictions = self.fc3(out)
         return raw_predictions
-
-a = LeNet(96)
