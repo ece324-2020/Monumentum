@@ -100,7 +100,7 @@ if __name__ == '__main__':
     torch.save(LeNet_Baseline.state_dict(),'baselineLeNet.pt')
 
     try:
-        os.mkdir(os.path.join('Output_Files','LR={}_batchsize={}_epochs={}'.format(LR,batch_size,epochs)))
+        os.mkdir(os.path.join('Baseline_Output_Files','LR={}_batchsize={}_epochs={}'.format(LR,batch_size,epochs)))
     except:
         pass
 
