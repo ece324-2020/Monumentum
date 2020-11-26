@@ -48,9 +48,9 @@ install_tensorflow() {
 install_tf_slim() {
   # Install TF-Slim from source.
   echo "Installing TF-Slim from source: ${git_repo}"
-  git clone ${tf_slim_git_repo}
-  local exit_code=$?
-  handle_exit_code ${exit_code} "Unable to clone TF-Slim repository ${tf_slim_git_repo}."
+  #git clone ${tf_slim_git_repo}
+  #local exit_code=$?
+  #handle_exit_code ${exit_code} "Unable to clone TF-Slim repository ${tf_slim_git_repo}."
   pushd . > /dev/null
   cd tf-slim
   pip3 install .
@@ -65,13 +65,13 @@ download_protoc() {
   local exit_code=$?
   handle_exit_code ${exit_code} "Unable to download Protobuf compiler from ${tf_slim_git_repo}."
 
-  mkdir ${protoc_folder}
-  local protoc_archive=`basename ${protoc_url}`
-  unzip ${protoc_archive} -d ${protoc_folder}
-  local exit_code=$?
-  handle_exit_code ${exit_code} "Unable to unzip Protobuf compiler from ${protoc_archive}."
-  
-  rm ${protoc_archive}
+  #mkdir ${protoc_folder}
+  #local protoc_archive=`basename ${protoc_url}`
+  #unzip ${protoc_archive} -d ${protoc_folder}
+  #local exit_code=$?
+  #handle_exit_code ${exit_code} "Unable to unzip Protobuf compiler from ${protoc_archive}."
+
+  #rm ${protoc_archive}
 }
 
 compile_delf_protos() {

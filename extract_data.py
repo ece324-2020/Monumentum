@@ -85,8 +85,8 @@ def remerge_data_set():
         (15445, 428), (190956, 428), (98993, 427), (201840, 427), (136302, 426), (70644, 425), (103899, 423),
         (28641, 418), (180901, 413)]
     folders = ['train','test','val']
-    merge_path = 'extracted_data_unsplit'
-    split_path = 'extracted_data_dir_split'
+    merge_path = 'extracted_data_unsplit_subset'
+    split_path = 'extracted_data_dir_split_subset'
     for folder in folders:
         for landmark in landmarkid_freq_pairs:
             split_path_temp = split_path+os.sep+folder+os.sep+str(landmark[0])

@@ -83,7 +83,7 @@ def main(unused_argv):
                               max_trials=1000)
 
   print(f'Found {sum(inliers)} inliers')
-  '''
+
   # Visualize correspondences, and save to file.
   _, ax = plt.subplots()
   img_1 = mpimg.imread(cmd_args.image_1_path)
@@ -99,7 +99,7 @@ def main(unused_argv):
       matches_color='b')
   ax.axis('off')
   ax.set_title('DELF correspondences')
-  plt.savefig(cmd_args.output_image)'''
+  plt.savefig(cmd_args.output_image)
   return sum(inliers)
 
 if __name__ == '__main__':
@@ -172,29 +172,38 @@ def get_inliers(features_1_path,features_2_path,image_1_path,image_2_path,output
     ])
 
     # Perform geometric verification using RANSAC.
-    _, inliers = measure.ransac((locations_1_to_use, locations_2_to_use),
-                                transform.AffineTransform,
-                                min_samples=3,
-                                residual_threshold=20,
-                                max_trials=1000)
+    try:
+        _, inliers = measure.ransac((locations_1_to_use, locations_2_to_use),
+                                    transform.AffineTransform,
+                                    min_samples=3,
+                                    residual_threshold=20,
+                                    max_trials=1000)
+    except:
+        print('Inliers exception occured, setting inliers = 0')
 
-    print(f'Found {sum(inliers)} inliers')
+    try:
+        sum_inliers = sum(inliers)
+    except:
+        print('Exception Occured: Unable to sum inliers, setting inliers = 0')
+        sum_inliers = 0
 
-    '''# Visualize correspondences, and save to file.
-    _, ax = plt.subplots()
-    img_1 = mpimg.imread(image_1_path)
-    img_2 = mpimg.imread(image_2_path)
-    inlier_idxs = np.nonzero(inliers)[0]
-    feature.plot_matches(
-        ax,
-        img_1,
-        img_2,
-        locations_1_to_use,
-        locations_2_to_use,
-        np.column_stack((inlier_idxs, inlier_idxs)),
-        matches_color='b')
-    ax.axis('off')
-    ax.set_title('DELF correspondences')
-    plt.savefig(output_image)'''
+    print(f'Found {sum_inliers} inliers')
+    if output_image != None:
+        # Visualize correspondences, and save to file.
+        _, ax = plt.subplots()
+        img_1 = mpimg.imread(image_1_path)
+        img_2 = mpimg.imread(image_2_path)
+        inlier_idxs = np.nonzero(inliers)[0]
+        feature.plot_matches(
+            ax,
+            img_1,
+            img_2,
+            locations_1_to_use,
+            locations_2_to_use,
+            np.column_stack((inlier_idxs, inlier_idxs)),
+            matches_color='b')
+        ax.axis('off')
+        ax.set_title('DELF correspondences')
+        plt.savefig(output_image)
 
-    return sum(inliers)
+    return sum_inliers

@@ -9,3 +9,7 @@ chromedriver
 output
 *.jpg
 dataset_chosen/
+*.delf
+*.proto
+*.txt
+*.zip

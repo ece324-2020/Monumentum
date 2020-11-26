@@ -50,7 +50,7 @@ def dataloaders(main_file_directory,batch_size = 1):
     torch.manual_seed(1234)
     training_transform_list = [transforms.Resize((56,56)),
                               transforms.RandomHorizontalFlip(p=0.4),
-                              transforms.GaussianBlur(3,sigma=1/3),
+                              #transforms.GaussianBlur(3,sigma=1/3),
                               transforms.ToTensor()]
     val_test_transform_list = [transforms.Resize((56,56)),transforms.ToTensor()]
 
@@ -81,4 +81,4 @@ def dataloaders(main_file_directory,batch_size = 1):
     return train_data_loader, val_data_loader, test_data_loader
 
 if __name__ == '__main__':
-    train_data_loader, val_data_loader, test_data_loader=dataloaders('extracted_data_dir_split_subset',batch_size = 128)
+    train_data_loader, val_data_loader, test_data_loader=dataloaders('data_main_split',batch_size = 128)

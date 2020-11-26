@@ -31,7 +31,7 @@ if __name__ == '__main__':
     epochs = GLOBALS.CONFIG['baseline_epochs']
     print('LR:{} | Batch Size:{} | Epochs:{}'.format(LR,batch_size,epochs))
     print('Preparing DataLoaders')
-    train_loader, val_loader, test_loader = dataloaders('extracted_data_dir_split',batch_size=batch_size)
+    train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
     print('DataLoaders Ready')
     LeNet_Baseline = LeNet()
     LeNet_Baseline = LeNet_Baseline.to(device)
@@ -90,10 +90,12 @@ if __name__ == '__main__':
         valid_acc_store.append(valid_acc)
         valid_loss_store.append(valid_loss)
         epoch_store.append(e)
-        if valid_acc >= 0.70:
-            print('saving')
-            torch.save(LeNet_Baseline.state_dict(),'baselineLeNet.pt')
+        if running_acc/(i+1) == 1:
+            break
+    torch.save(LeNet_Baseline.state_dict(),'baselineLeNet.pt')
 
+    test_acc,test_loss = evaluate(LeNet_Baseline,test_loader,loss_function)
+    print('Test Acc: {} | Test Loss: {}'.format(test_acc,test_loss))
     plt.plot(epoch_store,train_loss_store,label='Training Loss')
     plt.plot(epoch_store,valid_loss_store,label='Validation Loss')
     plt.title('Baseline LeNet: Loss VS Epochs (LR:{},batch_size:{},SGD)'.format(LR,batch_size))

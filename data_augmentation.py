@@ -99,8 +99,8 @@ def create_augment_folder(set_path, dataset_path, set_dir):
 
 def create_augmented_folders():
     base = os.path.dirname(os.path.realpath(__file__))
-    dataset_path = os.path.join(base,'extracted_data_dir_split')
-    train_dir='train'
+    dataset_path = os.path.join(base,'data_main')
+    train_dir='dataset_delf_filtered_unaugmented'
     val_dir='val'
     test_dir='test'
 
@@ -111,5 +111,5 @@ def create_augmented_folders():
     create_augment_folder(train_path, dataset_path, train_dir)
     #create_augment_folder(val_path, dataset_path, val_dir)
     #create_augment_folder(test_path, dataset_path, test_dir)
-
-create_augmented_folders()
+if __name__ == '__main__':
+    create_augmented_folders()
