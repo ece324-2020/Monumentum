@@ -7,7 +7,7 @@ chromedriver
 *.csv
 *.pyc
 output
-*.jpg
+
 dataset_chosen/
 *.delf
 *.proto
