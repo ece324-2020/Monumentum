@@ -48,11 +48,12 @@ def dataloaders(main_file_directory,batch_size = 1):
         #print('std',std)
         return mean,std
     torch.manual_seed(1234)
-    training_transform_list = [transforms.Resize((56,56)),
+    resized_size = 96
+    training_transform_list = [transforms.Resize((resized_size,resized_size)),
                               transforms.RandomHorizontalFlip(p=0.4),
                               #transforms.GaussianBlur(3,sigma=1/3),
                               transforms.ToTensor()]
-    val_test_transform_list = [transforms.Resize((56,56)),transforms.ToTensor()]
+    val_test_transform_list = [transforms.Resize((resized_size,resized_size)),transforms.ToTensor()]
 
     train_transforms, val_transforms, test_transforms = training_transform_list,val_test_transform_list,val_test_transform_list
     '''
