@@ -72,9 +72,9 @@ def dataloaders(main_file_directory,batch_size = 1):
     print('Test mean:{} and std:{}'.format(test_mean,test_std))
     '''
     # Normalize with calculated mean and std (approximate calculated on subset of data)
-    train_transforms = transforms.Compose(train_transforms + [transforms.Normalize([0.475,0.48,0.465],[0.215,0.22,0.245])])
-    val_transforms = transforms.Compose(val_transforms + [transforms.Normalize([0.475,0.48,0.465],[0.215,0.22,0.245])])
-    test_transforms = transforms.Compose(test_transforms + [transforms.Normalize([0.475,0.48,0.465],[0.215,0.22,0.245])])
+    train_transforms = transforms.Compose(train_transforms + [transforms.Normalize([0.4928, 0.5047, 0.4983],[0.2209, 0.2301, 0.2720])])
+    val_transforms = transforms.Compose(val_transforms + [transforms.Normalize([0.4896, 0.5015, 0.4951],[0.2243, 0.2314, 0.2714])])
+    test_transforms = transforms.Compose(test_transforms + [transforms.Normalize([0.4909, 0.5033, 0.4985],[0.2193, 0.2271, 0.2669])])
 
     transform_list = [train_transforms, val_transforms, test_transforms]
 

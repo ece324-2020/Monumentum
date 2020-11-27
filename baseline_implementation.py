@@ -8,6 +8,9 @@ from utils import get_accuracy, evaluate
 import time
 import yaml
 import matplotlib.pyplot as plt
+import os
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
 #torch.set_num_threads(2)
 
 def initialize_hyper(path_to_config):
@@ -22,7 +25,32 @@ def initialize_hyper(path_to_config):
             print(exc)
             return None
 
-def initialize_training():
+def create_confusion_plot(model,test_loader):
+    def confusion_matrix_generation(model,test_loader):
+        y_true,y_pred=[],[]
+        for i,data in enumerate(train_loader,0):
+            images, labels = data
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            y_true+=labels.tolist()
+            y_pred+=predicted.tolist()
+        confusion=confusion_matrix(y_true,y_pred)
+        return confusion
+    confusion = confusion_matrix_generation(model,train_loader, labels = classes)
+    df_cm = pd.DataFrame(array, index = [i for i in classes],
+                  columns = [i for i in classes])
+    plt.figure(figsize = (10,7))
+    sn.heatmap(df_cm, annot=True)
+    return confusion
+
+if __name__ == '__main__':
+    try:
+        os.mkdir('Baseline_Output_Files')
+    except:
+        pass
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print('Device:',device)
+    GLOBALS.CONFIG = initialize_hyper('config.yaml')
     LR = GLOBALS.CONFIG['baseline_LR']
     batch_size = GLOBALS.CONFIG['baseline_batch_size']
     epochs = GLOBALS.CONFIG['baseline_epochs']
@@ -100,20 +128,25 @@ if __name__ == '__main__':
             break
     torch.save(LeNet_Baseline.state_dict(),'baselineLeNet.pt')
 
+    try:
+        os.mkdir(os.path.join('Baseline_Output_Files','LR={}_batchsize={}_epochs={}'.format(LR,batch_size,epochs)))
+    except:
+        pass
+
     test_acc,test_loss = evaluate(LeNet_Baseline,test_loader,loss_function)
     print('Test Acc: {} | Test Loss: {}'.format(test_acc,test_loss))
     plt.plot(epoch_store,train_loss_store,label='Training Loss')
     plt.plot(epoch_store,valid_loss_store,label='Validation Loss')
-    plt.title('Baseline LeNet: Loss VS Epochs (LR:{},batch_size:{},SGD)'.format(LR,batch_size))
+    plt.title('Baseline LeNet: Loss VS Epochs (LR:{},batch_size:{},Epochs:{},SGD)'.format(LR,batch_size,epochs))
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend(loc='lower right')
-    plt.savefig('BaselineLeNet_loss.png')
+    plt.savefig(os.path.join('Baseline_Output_Files','LR={}_batchsize={}_epochs={}'.format(LR,batch_size,epochs),'BaselineLeNet_loss.png'),bbox_inches='tight',dpi=300)
     plt.clf()
     plt.plot(epoch_store,train_acc_store,label='Training Accuracy')
     plt.plot(epoch_store,valid_acc_store,label='Validation Accuracy')
-    plt.title('Baseline LeNet: Accuracy VS Epochs (LR:{},batch_size:{},SGD)'.format(LR,batch_size))
+    plt.title('Baseline LeNet: Accuracy VS Epochs (LR:{},batch_size:{},Epochs:{},SGD)'.format(LR,batch_size,epochs))
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend(loc='lower right')
-    plt.savefig('BaselineLeNet_acc.png')
+    plt.savefig(os.path.join('Baseline_Output_Files','LR={}_batchsize={}_epochs={}'.format(LR,batch_size,epochs),'BaselineLeNet_acc.png'),bbox_inches='tight',dpi=300)
