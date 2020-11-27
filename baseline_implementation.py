@@ -9,6 +9,8 @@ import time
 import yaml
 import matplotlib.pyplot as plt
 import os
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
 #torch.set_num_threads(2)
 
 def initialize_hyper(path_to_config):
@@ -22,6 +24,24 @@ def initialize_hyper(path_to_config):
         except yaml.YAMLError as exc:
             print(exc)
             return None
+
+def create_confusion_plot(model,test_loader):
+    def confusion_matrix_generation(model,test_loader):
+        y_true,y_pred=[],[]
+        for i,data in enumerate(train_loader,0):
+            images, labels = data
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            y_true+=labels.tolist()
+            y_pred+=predicted.tolist()
+        confusion=confusion_matrix(y_true,y_pred)
+        return confusion
+    confusion = confusion_matrix_generation(model,train_loader, labels = classes)
+    df_cm = pd.DataFrame(array, index = [i for i in classes],
+                  columns = [i for i in classes])
+    plt.figure(figsize = (10,7))
+    sn.heatmap(df_cm, annot=True)
+    return confusion
 
 if __name__ == '__main__':
     try:
