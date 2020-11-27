@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import seaborn as sn
+from sklearn.metrics import confusion_matrix
 
 def create_confusion_plot(model,test_loader, classes):
     def confusion_matrix_generation(model,test_loader,classes):
@@ -126,7 +127,7 @@ if __name__ == '__main__':
     model, loss_function, optimizer, loaders, classes, device = initialize_training(input_model=GLOBALS.CONFIG['model_name'],
                     optimizer_tag=GLOBALS.CONFIG['optim'],momentum_tag = GLOBALS.CONFIG['momentum'])
 
-    #create_confusion_plot(model,loaders['test'],classes)
+    create_confusion_plot(model,loaders['test'],classes)
     print('Starting Epochs')
     train_loss_store = []
     train_acc_store = []
@@ -189,7 +190,6 @@ if __name__ == '__main__':
     writer = pd.ExcelWriter(os.path.join(data_folder_path,xlsx_name), engine='xlsxwriter')
     df.to_excel(writer, sheet_name='Sheet1')
     writer.save()
-    #df.to_csv(data_folder_path+os.sep+xlsx_name)
     print('Test Acc: {} | Test Loss: {}'.format(test_acc,test_loss))
 
     plt.plot(epoch_store,train_loss_store,label='Training Loss')
