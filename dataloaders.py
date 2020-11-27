@@ -51,7 +51,7 @@ def dataloaders(main_file_directory,batch_size = 1):
     resized_size = 128
     print('Input Image size:',resized_size)
     training_transform_list = [transforms.Resize((resized_size,resized_size)),
-                              transforms.RandomHorizontalFlip(p=0.4),
+                              transforms.RandomHorizontalFlip(p=0.5),
                               #transforms.GaussianBlur(3,sigma=1/3),
                               transforms.ToTensor()]
     val_test_transform_list = [transforms.Resize((resized_size,resized_size)),transforms.ToTensor()]

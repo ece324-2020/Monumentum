@@ -51,7 +51,7 @@ def return_model(model_tag='ResNet'):
     vgg_mod = models.vgg16(pretrained=True)
     print(res_mod.fc, 'pre-change')
     num_ftrs = res_mod.fc.in_features
-    res_mod.fc = nn.Sequential(nn.Linear(num_ftrs, 128),
+    res_mod.fc = nn.Sequential(nn.ReLU(nn.Linear(num_ftrs, 128)),
                                nn.Linear(128,26))
     print(res_mod.fc)
     for name, child in res_mod.named_children():
