@@ -56,7 +56,8 @@ def return_model(model_tag='ResNet'):
                                nn.ReLU(),
                                nn.Linear(128,26))
     print(res_mod.fc)
-    vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
+    vgg_num_ftrs = vgg_mod.classifier.in_features
+    vgg_mod.classifier = nn.Sequential(nn.Linear(vgg_num_ftrs,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,4096,bias=True),
