@@ -57,7 +57,7 @@ def dataloaders(main_file_directory,batch_size = 1):
     val_test_transform_list = [transforms.Resize((resized_size,resized_size)),transforms.ToTensor()]
 
     train_transforms, val_transforms, test_transforms = training_transform_list,val_test_transform_list,val_test_transform_list
-
+    '''
     initial_train_transforms = transforms.Compose(training_transform_list)
     initial_val_test_transforms = transforms.Compose(val_test_transform_list)
 
@@ -71,7 +71,7 @@ def dataloaders(main_file_directory,batch_size = 1):
     print('Val mean:{} and std:{}'.format(val_mean,val_std))
     test_mean,test_std = find_mean_std(test_data_loader)
     print('Test mean:{} and std:{}'.format(test_mean,test_std))
-
+    '''
     # Normalize with calculated mean and std (approximate calculated on subset of data)
     train_transforms = transforms.Compose(train_transforms + [transforms.Normalize([0.4928, 0.5047, 0.4983],[0.2235, 0.2324, 0.2740])])
     val_transforms = transforms.Compose(val_transforms + [transforms.Normalize([0.4896, 0.5015, 0.4951],[0.2268, 0.2337, 0.2734])])
