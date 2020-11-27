@@ -124,13 +124,14 @@ if __name__ == '__main__':
 
     GLOBALS.CONFIG = initialize_hyper('config.yaml')
 
+    sub_folder_path = 'Model={}_Optim={}_LR={}_batchsize={}_epochs={}_momentum={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])
+
     try:
-        os.mkdir(os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}_momentum={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'],GLOBALS.CONFIG['momentum'])))
+        os.mkdir(os.path.join(output_path,sub_folder_path))
     except:
         pass
-    data_folder_path = os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}_momentum={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'],GLOBALS.CONFIG['momentum']))
 
-
+    data_folder_path = os.path.join(output_path,sub_folder_path)
 
     model, loss_function, optimizer, loaders, classes, device = initialize_training(input_model=GLOBALS.CONFIG['model_name'],
                     optimizer_tag=GLOBALS.CONFIG['optim'],momentum_tag = GLOBALS.CONFIG['momentum'])
@@ -192,7 +193,7 @@ if __name__ == '__main__':
 
 
     torch.save(model.state_dict(),os.path.join(data_folder_path,'{}.pt'.format(GLOBALS.CONFIG['model_name'])))
-
+    print('performance_statistics',performance_statistics)
     df = pd.DataFrame([performance_statistics])
     xlsx_name = 'LR={}_batchsize={}_epochs={}.xlsx'.format(GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])
     writer = pd.ExcelWriter(os.path.join(data_folder_path,xlsx_name), engine='xlsxwriter')
