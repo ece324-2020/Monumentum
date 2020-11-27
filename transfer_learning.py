@@ -107,8 +107,10 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     mod = mod.to(device)
     loss_function = nn.CrossEntropyLoss()
     optimizers = {'SGD':torch.optim.SGD,'Adam':torch.optim.Adam,'RMSProp':torch.optim.RMSprop}
-    optimizer = optimizers[optimizer_tag](mod.parameters(),momentum=momentum_tag,lr=LR)
-
+    if optimizer_tag!='Adam':
+        optimizer = optimizers[optimizer_tag](mod.parameters(),momentum=momentum_tag,lr=LR)
+    else:
+        optimizer = optimizers[optimizer_tag](mod.parameters(),lr=LR)
     return mod, loss_function, optimizer, loaders, classes, device
 
 if __name__ == '__main__':
