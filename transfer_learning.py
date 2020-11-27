@@ -62,7 +62,7 @@ def return_model(model_tag='ResNet'):
                                nn.Linear(4096,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
-                               nn.Linear(4096,27,bias=True)
+                               nn.Linear(4096,26,bias=True)
                                )
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
