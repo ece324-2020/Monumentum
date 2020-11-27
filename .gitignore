@@ -18,3 +18,4 @@ dataset_chosen/
 *.png
 key
 key.pub
+train_data_files/

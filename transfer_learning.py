@@ -16,8 +16,9 @@ import pandas as pd
 import seaborn as sn
 from sklearn.metrics import confusion_matrix
 
-def create_confusion_plot(model,test_loader, classes):
-    def confusion_matrix_generation(model,test_loader,classes):
+def create_confusion_plot(model,test_loader,classes,data_folder_path):
+    classes = sorted([int(i) for i in classes])
+    def confusion_matrix_generation(model,test_loader):
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         y_true,y_pred=[],[]
         for i,data in enumerate(test_loader,0):
@@ -27,26 +28,27 @@ def create_confusion_plot(model,test_loader, classes):
             _, predicted = torch.max(outputs.data, 1)
             y_true+=labels.tolist()
             y_pred+=predicted.tolist()
-        confusion=confusion_matrix(y_true,y_pred,labels = classes)
+        confusion=confusion_matrix(y_true,y_pred)
         return confusion
-    confusion = confusion_matrix_generation(model,test_loader,classes)
-    df_cm = pd.DataFrame(array, index = [i for i in classes],
+    confusion = confusion_matrix_generation(model,test_loader)
+    df_cm = pd.DataFrame(confusion, index = [i for i in classes],
                   columns = [i for i in classes])
-    plt.figure(figsize = (10,7))
+    plt.figure(figsize = (11,7))
     sn.heatmap(df_cm, annot=True)
-    plt.show()
+    plt.title('Confusion Plot for {} Model'.format(GLOBALS.CONFIG['model_name']))
+    plt.savefig(os.path.join(data_folder_path,'confusion_plot.jpg'),bbox_inches='tight',dpi=300)
+    print('Done Confusion Plot')
     return True
 
 def return_model(model_tag='ResNet'):
     ssl._create_default_https_context = ssl._create_unverified_context
-
 
     res_mod = models.resnet34(pretrained=True)
     vgg_mod = models.vgg16(pretrained=True)
     print(res_mod.fc, 'pre-change')
     num_ftrs = res_mod.fc.in_features
     res_mod.fc = nn.Sequential(nn.Linear(num_ftrs, 128),
-                               nn.Linear(128,27))
+                               nn.Linear(128,26))
     print(res_mod.fc)
     for name, child in res_mod.named_children():
         if name in ['fc']:
@@ -90,7 +92,7 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     print('LR:{} | Batch Size:{} | Epochs:{}'.format(LR,batch_size,epochs))
     print('Preparing DataLoaders')
     train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
-    classes = os.listdir('dataset_delf_filtered_augmented_split')
+    classes = os.listdir('dataset_delf_filtered_augmented_split'+os.sep+'train')
     try:
         classes.remove('.DS_Store')
     except:
@@ -127,7 +129,7 @@ if __name__ == '__main__':
     model, loss_function, optimizer, loaders, classes, device = initialize_training(input_model=GLOBALS.CONFIG['model_name'],
                     optimizer_tag=GLOBALS.CONFIG['optim'],momentum_tag = GLOBALS.CONFIG['momentum'])
 
-    create_confusion_plot(model,loaders['test'],classes)
+
     print('Starting Epochs')
     train_loss_store = []
     train_acc_store = []
@@ -221,3 +223,4 @@ if __name__ == '__main__':
                                     GLOBALS.CONFIG['LR'],
                                     GLOBALS.CONFIG['batch_size'],
                                     GLOBALS.CONFIG['optim'])),bbox_inches='tight',dpi=300)
+    create_confusion_plot(model,loaders['test'],classes,data_folder_path)
