@@ -48,7 +48,8 @@ def dataloaders(main_file_directory,batch_size = 1):
         #print('std',std)
         return mean,std
     torch.manual_seed(1234)
-    resized_size = 96
+    resized_size = 128
+    print('Input Image size:',resized_size)
     training_transform_list = [transforms.Resize((resized_size,resized_size)),
                               transforms.RandomHorizontalFlip(p=0.4),
                               #transforms.GaussianBlur(3,sigma=1/3),
