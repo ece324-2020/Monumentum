@@ -73,9 +73,9 @@ def dataloaders(main_file_directory,batch_size = 1):
     print('Test mean:{} and std:{}'.format(test_mean,test_std))
     '''
     # Normalize with calculated mean and std (approximate calculated on subset of data)
-    train_transforms = transforms.Compose(train_transforms + [transforms.Normalize([0.4928, 0.5047, 0.4983],[0.2209, 0.2301, 0.2720])])
-    val_transforms = transforms.Compose(val_transforms + [transforms.Normalize([0.4896, 0.5015, 0.4951],[0.2243, 0.2314, 0.2714])])
-    test_transforms = transforms.Compose(test_transforms + [transforms.Normalize([0.4909, 0.5033, 0.4985],[0.2193, 0.2271, 0.2669])])
+    train_transforms = transforms.Compose(train_transforms + [transforms.Normalize([0.4928, 0.5047, 0.4983],[0.2235, 0.2324, 0.2740])])
+    val_transforms = transforms.Compose(val_transforms + [transforms.Normalize([0.4896, 0.5015, 0.4951],[0.2268, 0.2337, 0.2734])])
+    test_transforms = transforms.Compose(test_transforms + [transforms.Normalize([0.4909, 0.5033, 0.4985],[0.2219, 0.2296, 0.2689])])
 
     transform_list = [train_transforms, val_transforms, test_transforms]
 
@@ -83,4 +83,4 @@ def dataloaders(main_file_directory,batch_size = 1):
     return train_data_loader, val_data_loader, test_data_loader
 
 if __name__ == '__main__':
-    train_data_loader, val_data_loader, test_data_loader=dataloaders('data_main_split',batch_size = 128)
+    train_data_loader, val_data_loader, test_data_loader=dataloaders('dataset_delf_filtered_augmented_split',batch_size = 128)
