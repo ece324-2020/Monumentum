@@ -13,3 +13,6 @@ dataset_chosen/
 *.proto
 *.txt
 *.zip
+*.pt
+*.xlsx
+*.png

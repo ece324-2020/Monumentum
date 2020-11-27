@@ -22,22 +22,28 @@ def initialize_hyper(path_to_config):
             print(exc)
             return None
 
-if __name__ == '__main__':
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print('Device:',device)
-    GLOBALS.CONFIG = initialize_hyper('config.yaml')
+def initialize_training():
     LR = GLOBALS.CONFIG['baseline_LR']
     batch_size = GLOBALS.CONFIG['baseline_batch_size']
     epochs = GLOBALS.CONFIG['baseline_epochs']
     print('LR:{} | Batch Size:{} | Epochs:{}'.format(LR,batch_size,epochs))
     print('Preparing DataLoaders')
     train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
+    loaders = {'train':train_loader, 'val':val_loader, 'test':test_loader}
     print('DataLoaders Ready')
     LeNet_Baseline = LeNet(96)
     LeNet_Baseline = LeNet_Baseline.to(device)
     #summary(LeNet_Baseline,(3,56,56))
     loss_function = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(LeNet_Baseline.parameters(),lr=LR)
+
+    return LeNet_Baseline, loss_function, optimizer, loaders
+
+if __name__ == '__main__':
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print('Device:',device)
+    GLOBALS.CONFIG = initialize_hyper('config.yaml')
+    model, loss_function, optimizer, loaders = initialize_training()
     print('Starting Epochs')
     train_loss_store = []
     train_acc_store = []
