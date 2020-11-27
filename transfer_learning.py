@@ -15,6 +15,7 @@ import os
 import pandas as pd
 import seaborn as sn
 from sklearn.metrics import confusion_matrix
+from shutil import copyfile
 
 def create_confusion_plot(model,test_loader,classes,data_folder_path):
     classes = sorted([int(i) for i in classes])
@@ -55,6 +56,23 @@ def return_model(model_tag='ResNet'):
                                nn.ReLU(),
                                nn.Linear(128,26))
     print(res_mod.fc)
+    vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
+                               nn.ReLU(),
+                               nn.Dropout(p=0.5),
+                               nn.Linear(4096,4096,bias=True),
+                               nn.ReLU(),
+                               nn.Dropout(p=0.5),
+                               nn.Linear(4096,27,bias=True)
+                               )
+    for name, child in vgg_mod.named_children():
+        if name in ['classifier']:
+            print('{} has been unfrozen.'.format(name))
+            print(child.parameters())
+            for param in child.parameters():
+                param.requires_grad = True
+        else:
+            for param in child.parameters():
+                param.requires_grad = False
     for name, child in res_mod.named_children():
         if name in ['fc']:
             print('{} has been unfrozen.'.format(name))
@@ -193,7 +211,8 @@ if __name__ == '__main__':
         epoch_store.append(e)
 
 
-    torch.save(model.state_dict(),os.path.join(data_folder_path,'{}.pt'.format(GLOBALS.CONFIG['model_name'])))
+    #torch.save(model.state_dict(),os.path.join(data_folder_path,'{}.pt'.format(GLOBALS.CONFIG['model_name'])))
+    copyfile('config.yaml',os.path.join(data_folder_path,'config_we_used.yaml'))
 
     df = pd.DataFrame([performance_statistics])
     xlsx_name = 'LR={}_batchsize={}_epochs={}.xlsx'.format(GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])
