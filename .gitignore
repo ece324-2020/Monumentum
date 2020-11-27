@@ -16,3 +16,5 @@ dataset_chosen/
 *.pt
 *.xlsx
 *.png
+key
+key.pub
