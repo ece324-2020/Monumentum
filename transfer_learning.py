@@ -56,6 +56,7 @@ def return_model(model_tag='ResNet'):
                                nn.ReLU(),
                                nn.Linear(128,26))
     print(res_mod.fc)
+    print(vgg_mod.classifier,'pre-change')
     vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
@@ -64,10 +65,10 @@ def return_model(model_tag='ResNet'):
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,26,bias=True)
                                )
+    print(vgg_mod.classifier)
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
-            print(child.parameters())
             for param in child.parameters():
                 param.requires_grad = True
         else:
@@ -112,7 +113,8 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     LR = GLOBALS.CONFIG['LR']
     batch_size = GLOBALS.CONFIG['batch_size']
     epochs = GLOBALS.CONFIG['epochs']
-    print('LR:{} | Batch Size:{} | Epochs:{} | Momentum:{} | Optim:{}'.format(LR,batch_size,epochs,momentum_tag,optimizer_tag))
+    model_name = GLOBALS.CONFIG['model_name']
+    print('LR:{} | Batch Size:{} | Epochs:{} | Momentum:{} | Optim:{} | Model Name:{}'.format(LR,batch_size,epochs,momentum_tag,optimizer_tag,model_name))
     print('Preparing DataLoaders')
     train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
     classes = os.listdir('dataset_delf_filtered_augmented_split'+os.sep+'train')

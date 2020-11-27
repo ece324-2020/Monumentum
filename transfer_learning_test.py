@@ -43,4 +43,4 @@ def return_model(model_tag='ResNet'):
 
     return models_dict[model_tag]
 
-return_model()
+#return_model()
