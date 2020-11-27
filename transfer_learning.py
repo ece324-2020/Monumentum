@@ -190,7 +190,7 @@ if __name__ == '__main__':
 
 
     torch.save(model.state_dict(),os.path.join(data_folder_path,'{}.pt'.format(GLOBALS.CONFIG['model_name'])))
-    print('performance_statistics',performance_statistics)
+
     df = pd.DataFrame([performance_statistics])
     xlsx_name = 'LR={}_batchsize={}_epochs={}.xlsx'.format(GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])
     writer = pd.ExcelWriter(os.path.join(data_folder_path,xlsx_name), engine='xlsxwriter')
