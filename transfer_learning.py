@@ -125,10 +125,10 @@ if __name__ == '__main__':
     GLOBALS.CONFIG = initialize_hyper('config.yaml')
 
     try:
-        os.mkdir(os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])))
+        os.mkdir(os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}_momentum={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'],GLOBALS.CONFIG['momentum'])))
     except:
         pass
-    data_folder_path = os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs']))
+    data_folder_path = os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}_momentum={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'],GLOBALS.CONFIG['momentum']))
 
 
 
