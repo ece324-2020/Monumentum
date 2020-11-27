@@ -180,8 +180,6 @@ if __name__ == '__main__':
         test_acc_store.append(test_acc)
         test_loss_store.append(test_loss)
         epoch_store.append(e)
-        if running_acc/(i+1) == 1:
-            break
 
 
     torch.save(model.state_dict(),os.path.join(data_folder_path,'{}.pt'.format(GLOBALS.CONFIG['model_name'])))
