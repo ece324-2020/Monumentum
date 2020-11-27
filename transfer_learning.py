@@ -35,7 +35,11 @@ def create_confusion_plot(model,test_loader,classes,data_folder_path):
                   columns = [i for i in classes])
     plt.figure(figsize = (11,7))
     sn.heatmap(df_cm, annot=True)
-    plt.title('Confusion Plot for {} Model'.format(GLOBALS.CONFIG['model_name']))
+    plt.title('Confusion Plot for {} Model (Optim={}_LR={}_batchsize={}_momentum={})'.format(GLOBALS.CONFIG['model_name'],
+                                                                                        GLOBALS.CONFIG['optim'],
+                                                                                        GLOBALS.CONFIG['LR'],
+                                                                                        GLOBALS.CONFIG['batch_size'],
+                                                                                        GLOBALS.CONFIG['momentum']))
     plt.savefig(os.path.join(data_folder_path,'confusion_plot.jpg'),bbox_inches='tight',dpi=300)
     print('Done Confusion Plot')
     return True
@@ -89,7 +93,7 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     LR = GLOBALS.CONFIG['LR']
     batch_size = GLOBALS.CONFIG['batch_size']
     epochs = GLOBALS.CONFIG['epochs']
-    print('LR:{} | Batch Size:{} | Epochs:{}'.format(LR,batch_size,epochs))
+    print('LR:{} | Batch Size:{} | Epochs:{} | Momentum:{} | Optim:{}'.format(LR,batch_size,epochs,momentum_tag,optimizer_tag))
     print('Preparing DataLoaders')
     train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
     classes = os.listdir('dataset_delf_filtered_augmented_split'+os.sep+'train')
@@ -121,10 +125,10 @@ if __name__ == '__main__':
     GLOBALS.CONFIG = initialize_hyper('config.yaml')
 
     try:
-        os.mkdir(os.path.join(output_path,'Model={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])))
+        os.mkdir(os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs'])))
     except:
         pass
-    data_folder_path = os.path.join(output_path,'Model={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs']))
+    data_folder_path = os.path.join(output_path,'Model={}_Optim={}_LR={}_batchsize={}_epochs={}'.format(GLOBALS.CONFIG['model_name'],GLOBALS.CONFIG['optim'],GLOBALS.CONFIG['LR'],GLOBALS.CONFIG['batch_size'],GLOBALS.CONFIG['epochs']))
 
 
 
