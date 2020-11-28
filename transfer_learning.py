@@ -50,24 +50,32 @@ def return_model(model_tag='ResNet'):
 
     res_mod = models.resnet34(pretrained=True)
     vgg_mod = models.vgg16(pretrained=True)
+    resnext_mod = models.resnext101_32x8d(pretrained=True)
     print(res_mod.fc, 'pre-change')
     num_ftrs = res_mod.fc.in_features
     res_mod.fc = nn.Sequential(nn.Linear(num_ftrs, 128),
-                               nn.ReLU(),
                                nn.Linear(128,26))
-    print(res_mod.fc)
-    print(vgg_mod.classifier,'pre-change')
     vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
-                               nn.Linear(4096,2048,bias=True),
+                               nn.Linear(4096,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
-                               nn.Linear(2048,26,bias=True)
+                               nn.Linear(4096,27,bias=True)
                                )
-    print(vgg_mod.classifier)
+    resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True))
+    exit()
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
+            print('{} has been unfrozen.'.format(name))
+            print(child.parameters())
+            for param in child.parameters():
+                param.requires_grad = True
+        else:
+            for param in child.parameters():
+                param.requires_grad = False
+    for name, child in res_mod.named_children():
+        if name in ['fc']:
             print('{} has been unfrozen.'.format(name))
             for param in child.parameters():
                 param.requires_grad = True
@@ -82,11 +90,9 @@ def return_model(model_tag='ResNet'):
         else:
             for param in child.parameters():
                 param.requires_grad = False
-
-    models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod}
+    models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}}
 
     return models_dict[model_tag]
-
 
 #torch.set_num_threads(2)
 '''
