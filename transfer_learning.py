@@ -60,7 +60,7 @@ def return_model(model_tag='ResNet'):
     vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
-                               nn.Linear(4096,4096,bias=True),
+                               nn.Linear(4096,2048,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,26,bias=True)
