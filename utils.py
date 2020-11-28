@@ -9,7 +9,7 @@ def evaluate(model,val_loader,loss_function):
     total_acc = 0
     loss_out = 0
     with torch.no_grad():
-        #model.eval()
+        model.eval()
         for i,datapoint in enumerate(val_loader):
             inputs, label = datapoint
             label = label.long()

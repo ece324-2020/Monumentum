@@ -59,7 +59,7 @@ def return_model(model_tag='ResNet'):
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,4096,bias=True),
-                               nn.ReLU(),
+                                nn.ReLU(),
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,27,bias=True)
                                )
@@ -176,6 +176,7 @@ if __name__ == '__main__':
         running_loss = 0
         running_acc = 0
         startepoch =time.time()
+        model.train()
         for i,data in enumerate(loaders['train']):
             startepoch_Inner = time.time()
             optimizer.zero_grad()
