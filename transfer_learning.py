@@ -82,7 +82,7 @@ def return_model(model_tag='ResNet'):
         else:
             for param in child.parameters():
                 param.requires_grad = False
-    for name, child in res_mod.named_children():
+    for name, child in resnext_mod.named_children():
         if name in ['fc']:
             print('{} has been unfrozen.'.format(name))
             for param in child.parameters():
