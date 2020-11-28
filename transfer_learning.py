@@ -64,7 +64,6 @@ def return_model(model_tag='ResNet'):
                                nn.Linear(4096,27,bias=True)
                                )
     resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True))
-    exit()
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
@@ -91,7 +90,7 @@ def return_model(model_tag='ResNet'):
             for param in child.parameters():
                 param.requires_grad = False
     models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}
-
+    print(models_dict[model_tag],'huh')
     return models_dict[model_tag]
 
 #torch.set_num_threads(2)
