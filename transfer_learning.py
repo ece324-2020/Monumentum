@@ -90,7 +90,7 @@ def return_model(model_tag='ResNet'):
         else:
             for param in child.parameters():
                 param.requires_grad = False
-    models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}}
+    models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}
 
     return models_dict[model_tag]
 
