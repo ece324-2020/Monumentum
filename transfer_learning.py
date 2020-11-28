@@ -16,6 +16,7 @@ import pandas as pd
 import seaborn as sn
 from sklearn.metrics import confusion_matrix
 from shutil import copyfile
+import pickle
 
 def create_confusion_plot(model,test_loader,classes,data_folder_path):
     classes = sorted([int(i) for i in classes])
@@ -63,7 +64,8 @@ def return_model(model_tag='ResNet'):
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,27,bias=True)
                                )
-    resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True))
+    resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True),
+                                   nn.Dropout(p=0.5))
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
@@ -260,3 +262,14 @@ if __name__ == '__main__':
                                     GLOBALS.CONFIG['batch_size'],
                                     GLOBALS.CONFIG['optim'])),bbox_inches='tight',dpi=300)
     create_confusion_plot(model,loaders['test'],classes,data_folder_path)
+
+    f = open(os.path.join(data_folder_path,'config_we_used.yaml'), "a")
+    f.write("\n")
+    f.write('----------------------------------------------')
+    f.write("\n")
+    f.write('Test Acc: {} | Test Loss: {}'.format(test_acc,test_loss))
+    f.write("\n")
+    f.write('Maximum Test Accuracy: {} | Minimum Test Loss: {}'.format(max(test_acc_store),min(test_loss_store)))
+    f.write("\n")
+    f.write('----------------------------------------------')
+    f.close()
