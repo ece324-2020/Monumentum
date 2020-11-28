@@ -222,6 +222,7 @@ if __name__ == '__main__':
     df.to_excel(writer, sheet_name='Sheet1')
     writer.save()
     print('Test Acc: {} | Test Loss: {}'.format(test_acc,test_loss))
+    print('Maximum Test Accuracy: {} | Minimum Test Loss: {}'.format(max(test_acc_store),min(test_loss_store)))
 
     plt.plot(epoch_store,train_loss_store,label='Training Loss')
     plt.plot(epoch_store,valid_loss_store,label='Validation Loss')
