@@ -1,13 +1,13 @@
-model_name: 'ResNet34'
-optim: 'SGD'
+model_name: 'VGG16'
+optim: 'Adam'
 
 # Hyper params used for transfer learning training
-LR: 0.01
-batch_size: 64
-epochs: 150
-momentum: 0.9
+LR: 0.003
+batch_size: 16
+epochs: 125
+momentum: 0
 
 # used ONLY for baseline training
-baseline_LR: 0.01
+baseline_LR: 0.001
 baseline_batch_size: 64
 baseline_epochs: 100
