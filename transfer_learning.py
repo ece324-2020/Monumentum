@@ -64,10 +64,12 @@ def return_model(model_tag='ResNet'):
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,27,bias=True)
                                )
-    resnext_mod.fc = nn.Sequential(nn.Linear(2048,2048,bias=True),
+    resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True))
+    #Post-iteration version.
+    '''resnext_mod.fc = nn.Sequential(nn.Linear(2048,2048,bias=True),
                                    nn.ReLU(),
                                    nn.Dropout(p=0.5),
-                                   nn.Linear(2048,26,bias=True))
+                                   nn.Linear(2048,26,bias=True))'''
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
@@ -124,7 +126,7 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     model_name = GLOBALS.CONFIG['model_name']
     print('LR:{} | Batch Size:{} | Epochs:{} | Momentum:{} | Optim:{} | Model Name:{}'.format(LR,batch_size,epochs,momentum_tag,optimizer_tag,model_name))
     print('Preparing DataLoaders')
-    main_directory_path = 'raw_augmented_split'
+    main_directory_path = 'dataset_delf_filtered_augmented_split'
     train_loader, val_loader, test_loader = dataloaders(main_directory_path,batch_size=batch_size)
     classes = os.listdir(main_directory_path+os.sep+'train')
     try:
