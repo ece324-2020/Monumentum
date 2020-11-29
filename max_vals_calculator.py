@@ -6,6 +6,8 @@ def max_val_accuracy(file_path):
     pass
 
 def stats_getter(folder_path):
+    if os.listdir(folder_path)==[]:
+        return True
     for file in os.listdir(folder_path):
         if file[-4:]=='xlsx':
             file_path = os.path.join(folder_path,file)
@@ -39,8 +41,8 @@ def stats_getter(folder_path):
 
 if __name__=='__main__':
     folder_path = '/Users/Admin/Documents/GitHub/Monumentum/Training_Runs/ResNext_Best_Run/Model=ResNext101_Optim=Adam_LR=0.001_batchsize=16_epochs=150_momentum=0'
-    for i in os.listdir('Training_Runs'):
-        file_path = os.path.join('Training_Runs',i)
+    for i in os.listdir('All_Runs'):
+        file_path = os.path.join('All_Runs',i)
         if os.path.isdir(file_path)==True:
             for j in os.listdir(file_path):
                 if os.path.isdir(os.path.join(file_path,j))==True:

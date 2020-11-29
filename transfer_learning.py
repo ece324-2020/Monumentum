@@ -55,8 +55,7 @@ def return_model(model_tag='ResNet'):
     resnext_mod = models.resnext101_32x8d(pretrained=True)
     print(res_mod.fc, 'pre-change')
     num_ftrs = res_mod.fc.in_features
-    res_mod.fc = nn.Sequential(nn.Linear(num_ftrs, 128),
-                               nn.Linear(128,26))
+    res_mod.fc = nn.Sequential(nn.Linear(num_ftrs,26))
     vgg_mod.classifier = nn.Sequential(nn.Linear(25088,4096,bias=True),
                                nn.ReLU(),
                                nn.Dropout(p=0.5),
