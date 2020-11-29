@@ -64,8 +64,10 @@ def return_model(model_tag='ResNet'):
                                nn.Dropout(p=0.5),
                                nn.Linear(4096,27,bias=True)
                                )
-    resnext_mod.fc = nn.Sequential(nn.Linear(2048,26,bias=True),
-                                   nn.Dropout(p=0.5))
+    resnext_mod.fc = nn.Sequential(nn.Linear(2048,2048,bias=True),
+                                   nn.ReLU(),
+                                   nn.Dropout(p=0.5),
+                                   nn.Linear(2048,26,bias=True))
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
