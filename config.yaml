@@ -1,10 +1,10 @@
-model_name: 'VGG16'
+model_name: 'ResNext101'
 optim: 'Adam'
 
 # Hyper params used for transfer learning training
-LR: 0.003
+LR: 0.001
 batch_size: 16
-epochs: 125
+epochs: 150
 momentum: 0
 
 # used ONLY for baseline training

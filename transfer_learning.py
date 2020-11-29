@@ -17,6 +17,7 @@ import seaborn as sn
 from sklearn.metrics import confusion_matrix
 from shutil import copyfile
 import pickle
+from torchsummary import torchsummary
 
 def create_confusion_plot(model,test_loader,classes,data_folder_path):
     classes = sorted([int(i) for i in classes])
@@ -71,7 +72,6 @@ def return_model(model_tag='ResNet'):
     for name, child in vgg_mod.named_children():
         if name in ['classifier']:
             print('{} has been unfrozen.'.format(name))
-            print(child.parameters())
             for param in child.parameters():
                 param.requires_grad = True
         else:
@@ -94,7 +94,7 @@ def return_model(model_tag='ResNet'):
             for param in child.parameters():
                 param.requires_grad = False
     models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}
-    print(models_dict[model_tag],'huh')
+    summary(resnext_mod,(3,128,128))
     return models_dict[model_tag]
 
 #torch.set_num_threads(2)
