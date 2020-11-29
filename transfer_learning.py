@@ -125,8 +125,9 @@ def initialize_training(input_model='ResNet',optimizer_tag='SGD',momentum_tag = 
     model_name = GLOBALS.CONFIG['model_name']
     print('LR:{} | Batch Size:{} | Epochs:{} | Momentum:{} | Optim:{} | Model Name:{}'.format(LR,batch_size,epochs,momentum_tag,optimizer_tag,model_name))
     print('Preparing DataLoaders')
-    train_loader, val_loader, test_loader = dataloaders('dataset_delf_filtered_augmented_split',batch_size=batch_size)
-    classes = os.listdir('dataset_delf_filtered_augmented_split'+os.sep+'train')
+    main_directory_path = 'raw_augmented_split'
+    train_loader, val_loader, test_loader = dataloaders(main_directory_path,batch_size=batch_size)
+    classes = os.listdir(main_directory_path+os.sep+'train')
     try:
         classes.remove('.DS_Store')
     except:
