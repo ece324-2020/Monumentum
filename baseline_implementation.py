@@ -77,6 +77,7 @@ if __name__ == '__main__':
     train_acc_store = []
     valid_loss_store = []
     valid_acc_store = []
+    test_acc_store = []
     epoch_store = []
     for e in range(epochs):
         running_loss = 0
@@ -116,7 +117,8 @@ if __name__ == '__main__':
             #print('Batch acc:',get_accuracy(raw_predict,labels))
 
         valid_acc,valid_loss = evaluate(LeNet_Baseline,val_loader,loss_function)
-
+        test_acc,test_loss = evaluate(LeNet_Baseline,test_loader,loss_function)
+        test_acc_store += [test_acc]
         print('Epoch {}/{} | Training Accuracy:{} | Training Loss:{} | Val Accuracy:{} | Val Loss:{} | Time Taken: {}'.format(e+1,
                                                             epochs,round(running_acc/(i+1),4),round(running_loss/(i+1),4),round(valid_acc,4),round(valid_loss,4),round(time.time()-startepoch,2)))
         train_loss_store.append(running_loss/(i+1))
@@ -126,6 +128,8 @@ if __name__ == '__main__':
         epoch_store.append(e)
         if running_acc/(i+1) == 1:
             break
+    print(test_acc_store)
+    exit()
     torch.save(LeNet_Baseline.state_dict(),'baselineLeNet.pt')
 
     try:

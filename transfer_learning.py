@@ -95,7 +95,7 @@ def return_model(model_tag='ResNet'):
             for param in child.parameters():
                 param.requires_grad = False
     models_dict = {'VGG16':vgg_mod,'ResNet34':res_mod,'ResNext101':resnext_mod}
-    summary(resnext_mod,(3,128,128))
+    #summary(resnext_mod,(3,128,128))
     return models_dict[model_tag]
 
 #torch.set_num_threads(2)

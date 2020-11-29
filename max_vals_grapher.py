@@ -20,6 +20,25 @@ def accuracy_getter(folder_path):
     test_accuracy_values = df[test_columns].values.squeeze()
     return val_accuracy_values, test_accuracy_values
 
+def output_scaler(output):
+    out_len = len(output)
+    out_list = []
+    print(len(output))
+    for i in range(0,len(output)-2,2):
+        try:
+            av = (output[i] + output[i+2])/2
+        except:
+            print(i,'i')
+        out_list+=[av]
+    final_out_list = []
+    for i in range(0,len(out_list),1):
+        if i==0:
+            final_out_list +=[output[2*i]]
+        final_out_list +=[out_list[i]]
+        final_out_list +=[output[2*i+2]]
+        final_out_list +=[out_list[i]]
+    return final_out_list
+
 def stats_getter(folder_path):
     val_accuracy_values, test_accuracy_values = accuracy_getter(folder_path)
 
@@ -52,8 +71,20 @@ if __name__=='__main__':
                     stats_getter(os.path.join(file_path,j))'''
     best_baseline_run = ''
     best_vgg_run = '/Users/Admin/Documents/GitHub/Monumentum/All_Runs/VGG_Runs/Model=VGG16_Optim=Adam_LR=0.001_batchsize=16_epochs=100_momentum=0'
-    best_resnet_run = ''
+    best_resnet_run = '/Users/Admin/Documents/GitHub/Monumentum/All_Runs/FC2_ResNet34_Runs/Model=ResNet34_Optim=Adam_LR=0.01_batchsize=64_epochs=150'
     best_original_resnext_run = ''
     best_resnext_run = '/Users/Admin/Documents/GitHub/Monumentum/All_Runs/ResNext_Best_Run_96/Model=ResNext101_Optim=Adam_LR=0.0005_batchsize=12_epochs=150_momentum=0'
-    print(accuracy_getter(best_resnext_run)[1][:100])
+    folder_paths = [best_baseline_run,best_vgg_run,best_resnet_run,best_original_resnext_run,best_resnext_run]
     label_values = ['Baseline Model', 'VGG Model', 'ResNet34 Model', 'Original ResNext Run', 'Final ResNext Model']
+    test_accuracy_values = accuracy_getter(best_vgg_run)[1]
+    output_scaler(test_accuracy_values)
+    exit()
+    x_vals = [i+1 for i in range(len(accuracy_getter(best_resnext_run)[1]))]
+    fig = plt.plot()
+    for index,path in enumerate(folder_paths):
+        test_accuracy_values = accuracy_getter(path)[1]
+        plt.plot(x_vals,test_accuracy_values,label = label_values[index])
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy Plots for Different Models')
+    plt.legend(loc='lower right')
