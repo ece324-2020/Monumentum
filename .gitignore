@@ -20,3 +20,5 @@ key
 key.pub
 train_data_files/
 Training_Runs/
+All_Runs/
+Archive/
