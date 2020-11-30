@@ -2,6 +2,14 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import os
+import matplotlib.pyplot as plt
+import numpy as np
+
+def imshow(img):
+    img = img / 2 + 0.5     # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
 
 def dataloaders(main_file_directory,batch_size = 1):
     def return_loaders(transform_list,batch_size,main_file_directory='output'):
@@ -83,4 +91,13 @@ def dataloaders(main_file_directory,batch_size = 1):
     return train_data_loader, val_data_loader, test_data_loader
 
 if __name__ == '__main__':
-    train_data_loader, val_data_loader, test_data_loader=dataloaders('dataset_delf_filtered_augmented_split',batch_size = 128)
+    train_data_loader, val_data_loader, test_data_loader=dataloaders('dataset_delf_filtered_augmented_split',batch_size = 4)
+
+    # get some random training images
+    dataiter = iter(train_data_loader)
+    images, labels = dataiter.next()
+
+    # show images
+    imshow(torchvision.utils.make_grid(images))
+    # print labels
+    print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
